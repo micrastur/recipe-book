@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Recipe } from '../../recipes/recipe.model';
+import { ShoppingListService } from '../shoppingList.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -7,30 +7,29 @@ import { Recipe } from '../../recipes/recipe.model';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  @Output() addedItem = new EventEmitter<{name: string, amount: string}>();
   @Output() deletedItem = new EventEmitter<void>();
   @Output() clearItems = new EventEmitter<void>();
 
   itemName: string;
   itemAmount: string;
 
-  constructor() { }
+  constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
   }
 
   onItemAdd() {
-    this.addedItem.emit({
+    this.shoppingListService.onAddItem({
       name: this.itemName,
       amount: this.itemAmount
     });
   }
 
-  onItemDelete(e) {
-    this.deletedItem.emit();
+  onItemDelete() {
+    this.shoppingListService.onDeleteItem();
   }
 
   onItemClear() {
-    this.clearItems.emit();
+    this.shoppingListService.onClearItems();
   }
 }
