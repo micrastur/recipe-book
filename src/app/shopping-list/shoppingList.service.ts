@@ -42,4 +42,9 @@ export class ShoppingListService {
     setActiveItem(itemName: string) {
         this.activeItemName = itemName;
     }
+
+    onAddIngredients(ingredients: Ingredient[]) {
+        this.ingredients.push(...ingredients);
+        this.updatedList.emit(this.ingredients.slice());
+    }
 }
