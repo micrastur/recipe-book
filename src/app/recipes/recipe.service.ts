@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class RecipeService {
     updateRecipe = new Subject<Recipe[]>();
+    private editMode: boolean;
     private recipes: Recipe[] = [
         new Recipe(
             'A Test Recipe 1',
@@ -53,5 +54,13 @@ export class RecipeService {
         console.log(recipe);
         this.recipes.push(recipe);
         this.updateRecipe.next(this.recipes.slice());
+    }
+
+    updateRecipeEditMode() {
+        this.editMode = !this.editMode;
+    }
+
+    getRecipeEditMode() {
+        return this.editMode;
     }
 }

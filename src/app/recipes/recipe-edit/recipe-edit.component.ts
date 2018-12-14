@@ -35,7 +35,6 @@ export class RecipeEditComponent implements OnInit {
     }
 
     onSubmit() {
-        console.log(this.recipeForm);
         const newRecipe = new Recipe(
             this.recipeForm.value.title,
             this.recipeForm.value.description,
@@ -43,6 +42,7 @@ export class RecipeEditComponent implements OnInit {
             this.recipeForm.value.ingredients
         );
         this.recipeService.onAddRecipe(newRecipe);
+        this.recipeService.updateRecipeEditMode();
     }
 
     setIngredient() {

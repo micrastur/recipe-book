@@ -24,6 +24,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   onNewRecipe() {
-      this.router.navigate(['new'], {relativeTo: this.route});
+        this.recipeService.updateRecipeEditMode();
+        this.router.navigate(['new'], {relativeTo: this.route});
   }
 }
