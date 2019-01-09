@@ -1,27 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 import { Recipe } from 'src/app/shared/recipe.model';
+import { CanDeactivateRecipeLink } from '../recipe-list/recipe-item/can-deactivate-guard.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, CanDeactivateRecipeLink {
     id: number;
-    editMode = false;
     recipeForm: FormGroup;
+    isDataSaved = false;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService) { }
+  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) { }
     ngOnInit() {
-        this.route.params.subscribe(
-            (params: Params) => {
-                this.id = +params['id'];
-                this.editMode = params['id'] != null;
-            }
-        );
         this.recipeForm = new FormGroup({
             title: new FormControl('', Validators.required),
             description: new FormControl('', Validators.required),
@@ -42,7 +38,9 @@ export class RecipeEditComponent implements OnInit {
             this.recipeForm.value.ingredients
         );
         this.recipeService.onAddRecipe(newRecipe);
-        this.recipeService.updateRecipeEditMode();
+        this.isDataSaved = !this.isDataSaved;
+        const lastAddedRecipeIndex = this.recipeService.getRecipes().length - 1;
+        this.router.navigate(['../', lastAddedRecipeIndex], {relativeTo: this.route});
     }
 
     setIngredient() {
@@ -55,5 +53,11 @@ export class RecipeEditComponent implements OnInit {
     }
     onDeleteIngredient(index) {
         (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+    }
+
+    canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+        if (this.isDataSaved) {
+            return true;
+        }
     }
 }

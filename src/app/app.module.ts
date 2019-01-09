@@ -15,6 +15,7 @@ import { ShoppingListService } from './shopping-list/shoppingList.service';
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { CanDeactivateRecipeLink } from './recipes/recipe-list/recipe-item/can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [ShoppingListService],
+  providers: [ShoppingListService, CanDeactivateRecipeLink],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

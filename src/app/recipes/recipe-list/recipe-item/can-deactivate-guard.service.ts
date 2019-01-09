@@ -5,7 +5,7 @@ export interface CanComponentDeactivate {
     canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
 }
 
-class CanDeactivateRecipeLink implements CanDeactivate<CanComponentDeactivate> {
+export class CanDeactivateRecipeLink implements CanDeactivate<CanComponentDeactivate> {
     canDeactivate(
         component: CanComponentDeactivate,
         currentRoute: ActivatedRouteSnapshot,
